@@ -18,7 +18,10 @@
     on the above rules.
 
     ** PUZZLE TWO **
-
+    The goal is to determine how many reports in the list are considered "safe" with a dampener.
+    A report is considered safe with a dampener if it is safe according to the rules in Puzzle One,
+    or if it can be made safe by removing exactly one level from the report. The task is to count how
+    many reports in the provided data are safe with the dampener based on the above rules.
 
 */
 
