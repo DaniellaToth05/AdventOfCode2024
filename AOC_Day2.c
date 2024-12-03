@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#define MAX_REPORTS 1000
+#define MAX_REPORTS 1001
 #define MAX_LEVELS 1000
 
 /*
@@ -17,10 +17,14 @@
     The task is to count how many of these sequences in the provided data are safe based 
     on the above rules.
 
+    ** PUZZLE TWO **
+
+
 */
 
-// function prototype to check if a report is safe
+// function prototypes to check if a report is safe
 bool isSafe(int report[], int size);
+bool isSafeWithDampener(int report[], int size);
 
 int main(){
 
@@ -55,12 +59,18 @@ int main(){
 
     reportSizes[numReports] = size; // store the size of the report
     numReports++; // increment the number of reports
+
+    if(numReports >= MAX_REPORTS){
+        printf("Sorry, the maximum number of reports has been reached!\n");
+        break;
+    }
+
     }
     fclose(file); // close the file
 
     // check each report to see if it is safe
     for(int i = 0; i < numReports; i++){
-        if(isSafe(reports[i], reportSizes[i])){
+        if(isSafeWithDampener(reports[i], reportSizes[i])){
             safeCount++;
         }
     }
@@ -91,4 +101,29 @@ bool isSafe(int report[], int size){
         }
     }
     return isIncreasing || isDecreasing; // return true if the report is either increasing or decreasing
+}
+
+// function definition to check if a report is safe with a dampener
+bool isSafeWithDampener(int report[], int size){
+    if(isSafe(report, size)){
+        return true;
+    }
+
+    // check if removing only one level makes the report safe
+    for (int i = 0; i < size; i ++){
+        int tempReport[MAX_LEVELS]; // temporary array to store the report
+        int tempSize = 0; // variable to store the size of the temporary report
+
+        for (int j = 0; j < size; j++){
+            if (j!= i){ // skip the level that is being removed
+                tempReport[tempSize] = report[j];
+                tempSize++; // increment the size of the temporary report
+            }
+        }
+        // check if the temporary report is safe
+        if (isSafe(tempReport, tempSize)){ 
+            return true; // the report is safe after removing one level
+        }
+    }
+    return false; // the report is not safe even with the dampener
 }
